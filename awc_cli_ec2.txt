@@ -1,8 +1,8 @@
-0. 리소스 태그 지정
+리소스 태그 지정
 
 aws ec2 create-tags --resources resource-id --tags Key=Name,Value=value
 
-1.  VPC구성 하기
+VPC구성 하기
 
 aws ec2 create-vpc --cidr-block **CIDR**
 
@@ -28,7 +28,7 @@ aws ec2 create-vpc --cidr-block **CIDR**
 }
 }
 
-2. 서브넷 구성
+서브넷 구성
 
 aws ec2 create-subnet --vpc-id vpc-id --cidr-block CIDR
 
@@ -50,7 +50,7 @@ aws ec2 create-subnet --vpc-id vpc-id --cidr-block CIDR
 }
 }
 
-3. 인터넷 게이트웨이 생성
+인터넷 게이트웨이 생성
 
 aws ec2 create-internet-gateway
 
@@ -63,11 +63,11 @@ aws ec2 create-internet-gateway
 }
 }
 
-4. VPC-인터넷게이트웨이 연결
+VPC-인터넷게이트웨이 연결
 
 aws ec2 attach-internet-gateway --vpc-id vpc-id --internet-gateway-id igw-id
 
-5. 라우팅 테이블 만들기
+라우팅 테이블 만들기
 
 aws ec2 create-route-table --vpc-id vpc-id
 
@@ -90,11 +90,11 @@ aws ec2 create-route-table --vpc-id vpc-id
 }
 }
 
-6. 라우팅 테이블 인터넷 게이트웨이 방향 설정
+라우팅 테이블 인터넷 게이트웨이 방향 설정
 
 aws ec2 create-route --route-table-id rtb-id --destination-cidr-block 0.0.0.0/0 --gateway-id igw-id
 
-7. 라우팅 테이블 상태 확인
+라우팅 테이블 상태 확인
 
 aws ec2 describe-route-tables --route-table-id rtb-id
 
@@ -125,11 +125,11 @@ aws ec2 describe-route-tables --route-table-id rtb-id
 ]
 }
 
-8. 서브넷 확인
+서브넷 확인
 
 aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-id" --query 'Subnets[*].{ID:SubnetId,CIDR:CidrBlock}'
 
-9. 라우팅 테이블 서브넷 연결
+라우팅 테이블 서브넷 연결
 
 aws ec2 associate-route-table --subnet-id subnet-id --route-table-id rtb-id
 
@@ -140,22 +140,56 @@ aws ec2 associate-route-table --subnet-id subnet-id --route-table-id rtb-id
 }
 }
 
-10. 서브넷 삭제
+eip 할당
+aws ec2 allocate-address
+{
+    "PublicIp": "ip-address",
+    "AllocationId": "eipalloc-id",
+    "PublicIpv4Pool": "amazon",
+    "NetworkBorderGroup": "us-east-2",
+    "Domain": "vpc"
+}
+
+nat-게이트웨이 생성 및 eip 부여
+aws ec2 create-nat-gateway --subnet-id subnet-id --allocation-id eipalloc-id
+{
+    "ClientToken": "bae3b90b-6304-4b9c-8876-928033069877",
+    "NatGateway": {
+        "CreateTime": "2021-06-10T04:10:10+00:00",
+        "NatGatewayAddresses": [
+            {
+                "AllocationId": "eipalloc-id"
+            }
+        ],
+        "NatGatewayId": "nat-id",
+        "State": "pending",
+        "SubnetId": "subnet-id",
+        "VpcId": "vpc-id"
+    }
+}
+
+nat-gateway 삭제
+aws ec2 delete-nat-gateway --nat-gateway-id nat-id
+
+eip 삭제
+aws ec2 release-address --allocation-id eipalloc-id
+
+서브넷 삭제
 
 aws ec2 delete-subnet --subnet-id subnet-id
 
-11. 라우팅 테이블 삭제
+라우팅 테이블 삭제
 
 aws ec2 delete-route-table --route-table-id rtb-id
 
-12. VPC에서 인터넷게이트웨이 분리
+VPC에서 인터넷게이트웨이 분리
 
 aws ec2 detach-internet-gateway --internet-gateway-id igw-id --vpc-id vpc-id
 
-13. 인터넷 게이트웨이 삭제
+인터넷 게이트웨이 삭제
 
 aws ec2 delete-internet-gateway --internet-gateway-id igw-id
 
-14. VPC 삭제
+VPC 삭제
 
 aws ec2 delete-vpc --vpc-id vpc-id
