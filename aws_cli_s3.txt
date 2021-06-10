@@ -1,8 +1,26 @@
 s3 버킷 만들기
-aws s3 mb bucket-name
+aws s3 mb s3://bucket-name
 
 s3 버킷 리스트 확인
 aws s3 ls
 
 s3 버킷 제거
-aws s3 rb bucket-name
+aws s3 rb s3://bucket-name
+
+s3 객체 이동
+aws s3 mv file-name s3://bucket-name
+               -----------     ----------------
+               source		target
+
+s3 업로드 다운로드
+aws s3 cp file-name s3://bucket-name
+             ------------      ---------------
+              source            target
+
+s3 객체 삭제
+aws s3 rm s3://bucket-name/file-name
+
+s3 동기화
+aws s3 sync PATH s3://bucket-name
+                -------      ---------------
+                source          target 
