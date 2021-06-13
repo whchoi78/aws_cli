@@ -150,6 +150,9 @@ aws ec2 allocate-address
     "Domain": "vpc"
 }
 
+eip 확인
+aws ec2 describe-addresses
+
 nat-게이트웨이 생성 및 eip 부여
 aws ec2 create-nat-gateway --subnet-id subnet-id --allocation-id eipalloc-id
 {
@@ -167,6 +170,9 @@ aws ec2 create-nat-gateway --subnet-id subnet-id --allocation-id eipalloc-id
         "VpcId": "vpc-id"
     }
 }
+
+nat-gateway 확인
+aws ec2 describe-nat-gateways
 
 nat-gateway 삭제
 aws ec2 delete-nat-gateway --nat-gateway-id nat-id
