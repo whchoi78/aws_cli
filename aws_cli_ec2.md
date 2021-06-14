@@ -32,12 +32,6 @@ aws ec2 create-vpc --cidr-block **CIDR**
 
 
 
-vpc 태그 추가 및 구성
-
-aws ec2 create-vpc --cidr-block **CIDR** --tag-specifications "ResourceType=vpc,Tags=[{Key=Name,Value=**value**}]"
-
-
-
 서브넷 구성(태그 없음)
 
 aws ec2 create-subnet --vpc-id **vpc-id**  --cidr-block **CIDR**
@@ -46,7 +40,7 @@ aws ec2 create-subnet --vpc-id **vpc-id**  --cidr-block **CIDR**
 
 서브넷 구성(태그 있음 및 가용성)
 
-aws ec2 create-subnet --vpc-id **vpc-id**  --cidr-block **CIDR** --availability-zone **az-id** --tag-specifications "ResourceType=**Type**,Tags=[{Key=Name,Value=**value**}]"
+aws ec2 create-subnet --vpc-id **vpc-id**  --cidr-block **CIDR** --availability-zone **availability-zone** --tag-specifications "ResourceType=**Type**,Tags=[{Key=Name,Value=**value**}]"
 
 [output]
 
@@ -123,12 +117,14 @@ aws ec2 create-route --route-table-id **rtb-id** --destination-cidr-block 0.0.0.
 
 aws ec2 describe-route-tables --route-table-id **rtb-id**
 
+[output]
+
 {
 "RouteTables": [
 {
 "Associations": [],
 "PropagatingVgws": [],
-"RouteTableId": "rtb-id",
+"RouteTableId": "**rtb-id**",
 "Routes": [
 {
 "DestinationCidrBlock": "10.0.0.0/16",
@@ -157,6 +153,8 @@ aws ec2 describe-subnets --filters "Name=vpc-id,Values=**vpc-id**" --query 'Subn
 라우팅 테이블 서브넷 연결
 
 aws ec2 associate-route-table --subnet-id **subnet-id** --route-table-id **rtb-id**
+
+[output]
 
 {
 "AssociationId": "rtbassoc-032a4a624cf204867",
