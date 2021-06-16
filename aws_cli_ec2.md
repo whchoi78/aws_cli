@@ -200,6 +200,12 @@ aws ec2 create-nat-gateway --subnet-id **subnet-id** --allocation-id **eipalloc-
     }
 }
 
+보안그룹 만들기
+aws ec2 create-security-group --group-name TestGroup --description "Test security group" --vpc-id vpc-0393fc096b14e8ac7 --tag-specifications "ResourceType=security-group,Tags=[{Key=Name,Value=Test-securitygroup}]"
+
+보안그룹 삭제
+aws ec2 delete-security-group --group-id sg-01f07b790bd025324
+
 nat-gateway 확인
 aws ec2 describe-nat-gateways
 
