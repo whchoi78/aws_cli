@@ -4,7 +4,7 @@ aws ec2 create-tags --resources **resource-id** --tags Key=Name,Value=**value**
 
 VPC구성 하기
 
-aws ec2 create-vpc --cidr-block **CIDR**
+aws ec2 create-vpc --cidr-block **CIDR** --tag-specifications "ResourceType=**Type**,Tags=[{Key=Name,Value=**value**}]"
 
 **[output]**
 
@@ -36,8 +36,6 @@ aws ec2 create-vpc --cidr-block **CIDR**
 
 aws ec2 create-subnet --vpc-id **vpc-id**  --cidr-block **CIDR**
 
-
-
 서브넷 구성(태그 있음 및 가용성)
 
 aws ec2 create-subnet --vpc-id **vpc-id**  --cidr-block **CIDR** --availability-zone **availability-zone** --tag-specifications "ResourceType=**Type**,Tags=[{Key=Name,Value=**value**}]"
@@ -64,8 +62,7 @@ aws ec2 create-subnet --vpc-id **vpc-id**  --cidr-block **CIDR** --availability-
 
 인터넷 게이트웨이 생성
 
-aws ec2 create-internet-gateway
-
+aws ec2 create-internet-gateway --tag-specifications "ResourceType=internet-gateway,Tags=[{Key=Name,Value=**value**}]"
 [output]
 
 {
@@ -78,7 +75,6 @@ aws ec2 create-internet-gateway
 }
 
 VPC-인터넷게이트웨이 연결
-
 aws ec2 attach-internet-gateway --vpc-id **vpc-id** --internet-gateway-id **igw-id**
 
 인터넷 게이트웨이 확인
@@ -165,7 +161,6 @@ aws ec2 associate-route-table --subnet-id **subnet-id** --route-table-id **rtb-i
 
 eip 할당
 aws ec2 allocate-address
-
 [output]
 
 {
@@ -181,7 +176,6 @@ aws ec2 describe-addresses
 
 nat-게이트웨이 생성 및 eip 부여
 aws ec2 create-nat-gateway --subnet-id **subnet-id** --allocation-id **eipalloc-id**
-
 [output]
 
 {
